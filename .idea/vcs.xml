@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Stock-Prediction-Models" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/git_topics" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/pytorch-movie-content-classify" vcs="Git" />
