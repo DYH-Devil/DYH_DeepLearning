@@ -13,6 +13,7 @@ if os.path.exists('./model/model.pkl') :#模型加载
     seq2seq_model.load_state_dict(torch.load('./model/model.pkl'))
     optimizer.load_state_dict(torch.load('./model/optimizer.pkl'))
 
+#训练模型
 def train(epoch) :
     for i in range(epoch) :
         for idx , (input , label , input_len , label_len) in enumerate(dataloader) :
