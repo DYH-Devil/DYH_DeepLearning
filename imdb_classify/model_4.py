@@ -8,6 +8,7 @@ import torch.nn as nn
 from lib import ws , max_len , hidden_size , num_layers , bidirectional , dropout , device , test_batch_size
 import torch.nn.functional as F
 
+#用LSTM模型进行影评分类
 
 class MyModel(nn.Module) :
     def __init__(self):
