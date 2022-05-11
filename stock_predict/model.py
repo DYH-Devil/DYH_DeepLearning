@@ -4,7 +4,7 @@ import  lib
 
 #print(type(x_train))
 """
-定义模型
+LSTM定义模型
 """
 class LSTM(nn.Module) :
     def __init__(self):
