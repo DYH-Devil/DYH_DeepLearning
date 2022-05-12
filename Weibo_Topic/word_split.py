@@ -20,7 +20,7 @@ def stopwords_list() :#停用词加载
 数据清洗:对一些标识进行过滤的操作
 """
 def processing(text) :
-    filters = ['\t', '\n', '\x97', '\x96', '@', '#', '$', '%', '&','!' , '，' , '？' , '——' , '_' , '。']
+    filters = ['\t', '\n', '\x97', '\x96', '@', '#', '$', '%', '&','！' , '，' , '？' , '——' , '_' , '。','—','…','；','“',"”",'：']
     text = re.sub('|'.join(filters), ' ', text)  # |表示综合所有的filters,全部替换
     text = re.sub("@.+?( |$)", "", text)#去除@xxx用户名
     text = re.sub("【.+?】", "", text)#去除【】里的内容，通常里面的内容是引用
@@ -36,14 +36,12 @@ def processing(text) :
 对句子实现中文分词
 """
 def word_split(text):
-    sentence_depart = jieba.cut(text.strip())
-    stop_words = stopwords_list()#停用词
+    sentence_depart = jieba.cut(text , cut_all = False)
     output = ""#用于输出
     for word in sentence_depart :
-        if word not in stop_words :#去停用词
-            if word != '\n':
-                output += word
-                output += ""
+        if word != '\n':
+            output += word
+            output += " "
     return output.strip()
 
 

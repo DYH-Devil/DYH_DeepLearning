@@ -11,7 +11,7 @@ df = pd.read_csv(r'D:/champagne_data/champagne.csv' , index_col = 0)#读取文�
 print(df.head())
 
 """
-数据可视化
+1.数据可视化
 """
 
 fig = go.Figure()#
@@ -19,7 +19,7 @@ fig.add_trace(go.Scatter(x = df.index , y = df['Sales'] , name = 'Sales'))
 fig.show()
 
 """
-数据归一化
+2.数据归一化
 """
 scaler = MinMaxScaler()
 new_col_name = 'Sales_scaler'
