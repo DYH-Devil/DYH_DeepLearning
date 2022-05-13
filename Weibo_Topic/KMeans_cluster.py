@@ -16,4 +16,4 @@ def KMeans_Topics(class_num) :#用KMeans完成聚类
 
 kmeans = KMeans_Topics(5)
 labels = kmeans.labels_
-print(len(labels))
+
