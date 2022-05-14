@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from dataset import get_dataloader
-from model import iris_classificationModel
+from Deep_Learning_Lesson.test1.dataset import get_dataloader
+from Deep_Learning_Lesson.test1.model import iris_classificationModel
 from torch.optim import Adam
 import numpy as np
 import os
@@ -10,7 +10,7 @@ model = iris_classificationModel()
 MSE = nn.CrossEntropyLoss()#损失定义为交叉熵损失
 optimizer = Adam(params = model.parameters() , lr = 0.001)#优化器使用Adam，学习率0.1
 
-if os.path.exists('./model/model.pkl') :
+if os.path.exists('model/model.pkl') :
     model.load_state_dict(torch.load('./model/model.pkl'))
     optimizer.load_state_dict(torch.load('./model/optimizer.pkl'))
     #加载模型与优化器类
