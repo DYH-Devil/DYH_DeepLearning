@@ -2,13 +2,13 @@ import torch
 from get_data import get_data
 from MNIST_MODEL import MNISTModel
 import torch.nn.functional as F
-from torch.optim import  SGD
+from torch.optim import Adagrad
 import os
 import config
 import numpy as np
 
 model = MNISTModel()#实例化模型
-optimizer = SGD(model.parameters() , lr = 0.001)#实例化优化器，传入模型参数，学习率
+optimizer = Adagrad(model.parameters() , lr = 0.001)#实例化优化器，传入模型参数，学习率
 
 if os.path.exists('./model/model.pkl') :#加载模型与优化器
     model.load_state_dict(torch.load('./model/model.pkl'))
