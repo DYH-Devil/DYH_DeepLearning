@@ -19,11 +19,35 @@ def create_dict(texts) :#根据文本,创建词典
     corpus = [dictionary.doc2bow(text) for text in texts]
     return dictionary , corpus
 
-corpus_train = './text_corpus/corpus_train.txt'
-texts = create_corpus(corpus_train)
 
-dictionary , corpus = create_dict(texts)
+class LDA_topic() :
+    def __init__(self , corpus , dictionary , num_topics , num_words):
+        self.corpus = corpus
+        self.dictionary = dictionary
+        self.num_topics = num_topics
+        self.num_words = num_words
+        self.lda = LdaModel(corpus = self.corpus , id2word = self.dictionary , num_topics = num_topics , passes = 30 , random_state = 1)
 
-lda = LdaModel(corpus = corpus , num_topics = 10 , id2word = dictionary , passes = 30 , random_state = 1)
-print(lda.print_topics(num_topics = 10 , num_words = 15))
+    def cluster(self):
+        key_word_file = './data/keywords.txt'
+        save_file = open(key_word_file , 'w' , encoding = 'utf-8')#保存路径
+        cluster_res = self.lda
+        for topic in cluster_res.print_topics(num_topics = self.num_topics , num_words = self.num_words) :
+            words = []
+            for word in topic[1].split('+') :
+                word = word.split('*')[1].replace(' ', '')
+                words.append(word)
+            save_file.write(str(topic[0]) + '\t' + ','.join(words) + '\n')
+
+if __name__ == '__main__':
+    corpus_train = './text_corpus/corpus_train.txt'
+    texts = create_corpus(corpus_train)
+
+    dictionary , corpus = create_dict(texts)#corpus:[词语编号id,文本中出现次数count]
+    tfidf = TfidfModel(corpus)
+    corpus_tfidf = tfidf[corpus]
+    lda = LDA_topic(corpus_tfidf , dictionary , 10 , 30)
+    lda.cluster()
+
+
 
