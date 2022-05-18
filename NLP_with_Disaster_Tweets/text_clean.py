@@ -2,6 +2,7 @@
 The target of this page:清洗文本数据，去除不必要的符号，表情等
 """
 import re
+from get_data import text_train , text_test
 
 #----------------------------------------------------------------------------------------------
 #step1:去除表情符号
@@ -80,15 +81,35 @@ def clean_words_elong(text) :
 # text = 'yesssss okkkkkk'
 # print(clean_words_elong(text))
 #----------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------------------
+#step7:去除数字
+def clean_number(text):
+    rep = re.compile(r'[-+]?[.\d]*[\d]+[:,.\d]*')
+    return rep.sub('', text)
+
+# #test
+# print(clean_number("13.5"))
+#----------------------------------------------------------------------------------------------
 #END
 
 
-def text_process(text) :
-    text = text.lower()#转小写
-    text = clean_emoji(text)
-    text = clean_at(text)
-    text = clean_HTML(text)
-    text = cleam_URL(text)
-    text = clean_repeat_punct(text)
-    text = clean_words_elong(text)
-    return text
+def text_process(text_list) :
+    text_process = []
+    for text in text_list :
+        text = text.lower()#转小写
+        text = clean_emoji(text)
+        text = clean_at(text)
+        text = clean_HTML(text)
+        text = cleam_URL(text)
+        text = clean_repeat_punct(text)
+        text = clean_words_elong(text)
+        text = clean_number(text)
+        text_process.append(text)
+    return text_process
+
+if __name__ == '__main__':
+    text_train_process = text_process(text_train)
+    print(text_process)
+    text_test_prodess = text_process(text_test)
+    print(text_test_prodess)
