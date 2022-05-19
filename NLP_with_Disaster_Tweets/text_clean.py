@@ -3,6 +3,8 @@ The target of this page:清洗文本数据，去除不必要的符号，表情�
 """
 import re
 from get_data import text_train , text_test
+from torchtext.data.utils import get_tokenizer#分词器
+from string import punctuation as punctuation_string
 
 #----------------------------------------------------------------------------------------------
 #step1:去除表情符号
@@ -91,8 +93,18 @@ def clean_number(text):
 # #test
 # print(clean_number("13.5"))
 #----------------------------------------------------------------------------------------------
-#END
 
+#----------------------------------------------------------------------------------------------
+#step7:去除标点
+def clean_punctuation(text):
+    rep = re.sub('[{}]'.format(punctuation_string),"",text)
+    return rep
+
+# #test
+# print(clean_number("13.5"))
+#----------------------------------------------------------------------------------------------
+
+#END
 
 def text_process(text_list) :
     text_process = []
@@ -105,11 +117,14 @@ def text_process(text_list) :
         text = clean_repeat_punct(text)
         text = clean_words_elong(text)
         text = clean_number(text)
+        text = clean_punctuation(text)
         text_process.append(text)
     return text_process
 
-if __name__ == '__main__':
-    text_train_process = text_process(text_train)
-    print(text_process)
-    text_test_prodess = text_process(text_test)
-    print(text_test_prodess)
+def split_word(text) :#文本分词
+    tokenizer = get_tokenizer('basic_english')
+    word_split = []
+    for line in text :
+        word_split.append(tokenizer(line))#对每条推文进行分词
+    return word_split
+
