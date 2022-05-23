@@ -32,7 +32,7 @@ class MyModel(nn.Module) :
         #获取两个方向的最后一次output进行concat操作
         output_fw = h_n[-2 , : , :]#正向最后一次输出
         output_bw = h_n[-1 , : , :]#反向最后一次输出
-        output = torch.cat([output_fw , output_bw] , dim = -1)#output[batch_size ,sqlen , hidden_size * 2]
+        output = torch.cat([output_fw , output_bw] , dim = -1)#output[batch_size ,batch_size , hidden_size * 2]
 
         out = self.linear(output)
 

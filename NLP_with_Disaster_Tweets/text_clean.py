@@ -88,7 +88,7 @@ def clean_words_elong(text) :
 #step7:去除数字
 def clean_number(text):
     rep = re.compile(r'[-+]?[.\d]*[\d]+[:,.\d]*')
-    return rep.sub('', text)
+    return rep.sub('NUMBER', text)
 
 # #test
 # print(clean_number("13.5"))
