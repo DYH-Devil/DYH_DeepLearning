@@ -1,10 +1,12 @@
 """
 The target of this page:构建双向LSTM模型
 """
+import math
 
 import torch
 import torch.nn as nn
 import config
+import torch.nn.functional as F
 
 class Twitter_BiLSTM(nn.Module) :
     def __init__(self , input_size , hidden_size , num_layers , drop_out):
@@ -24,7 +26,18 @@ class Twitter_BiLSTM(nn.Module) :
 
         self.fc1 = nn.Linear(hidden_size * 2 , hidden_size)
         self.fc2 = nn.Linear(hidden_size , 1)
-        self.drop = nn.Dropout(0.2)
+        self.drop = nn.Dropout(0.5)
+
+    def attention(self , query , x ,mask = None):
+        d_k = query.size(-1)#d_k为query的维度
+        scores = torch.matmul(query , x.transpose(1 , 2) / math.sqrt(d_k))
+        alpha_n = F.softmax(scores , dim = -1)
+        context = torch.matmul(alpha_n , x).sum(1)
+        return context , alpha_n
+
+
+
+
 
     def forward(self , text):
         embedded = self.embedding(text)# embedded:[batch_size , seq_len , embedding_dim]

@@ -2,7 +2,6 @@
 The target of this page:训练代码
 """
 
-import torch.nn as nn
 import torch
 import config
 from torch.optim import Adam
@@ -47,4 +46,4 @@ def train(num_epoch) :
                 torch.save(model.state_dict(), './model/model.pkl')  # 保存模型
                 torch.save(optimizer.state_dict(), './model/optimizer.pkl')  # 保存优化器
 
-train(10)
+train(25)

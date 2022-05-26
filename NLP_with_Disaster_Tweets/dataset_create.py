@@ -8,6 +8,7 @@ from text_clean import text_process , split_word
 from get_data import text_train , text_test
 from get_data import y_train as label_train
 from config import ws
+import config
 
 #清洗
 #-------------------------------------------------------------
@@ -34,10 +35,13 @@ def creat_dataloader(x_train , y_train) :
     return dataloader
 
 #step1:将分好词的句子转化为数字序列，并转为Tensor类型数据
-x_train = [ws.transform(i , max_len = 300) for i in text_train_split]
+x_train = [ws.transform(i , max_len = config.max_len) for i in text_train_split]
 x_train =torch.LongTensor(x_train)
 y_train = label_train
 y_train = torch.Tensor(y_train)
+
+x_test = [ws.transform(i , max_len = config.max_len) for i in text_test_split]#测试集转为数字序列
+x_test = torch.LongTensor(x_test)
 
 #step2:构建dataloader
 dataloader = creat_dataloader(x_train , y_train)

@@ -27,12 +27,14 @@ x_test = data_test.drop(['id' , 'keyword' , 'location'] , axis = 1).to_numpy().r
 
 text_train = []
 text_test = []
+text_train_len = []
 for i in range(len(x_train)) :
     text_train.append(x_train[i])
 for i in range(len(x_test)) :
     text_test.append(x_test[i])
 
 #print(text_train)
+
 
 
 

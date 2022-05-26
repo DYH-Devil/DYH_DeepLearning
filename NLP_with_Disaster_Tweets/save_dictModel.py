@@ -16,7 +16,7 @@ for sentence in text_train_split :
 #     print("idx:" , idx , "key:" , key , "value:" , value)
 
 #生成词典ws.dict
-ws.build_dict(min = 0 , max = 200 , max_features = 20000)
+ws.build_dict(min = 0 , max = 200 , max_features = 13000)
 print(len(ws.dict))
 
 #保存字典数据
