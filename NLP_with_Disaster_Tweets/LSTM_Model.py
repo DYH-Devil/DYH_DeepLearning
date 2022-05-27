@@ -1,7 +1,6 @@
 """
 The target of this page:构建双向LSTM模型
 """
-import math
 
 import torch
 import torch.nn as nn
@@ -24,31 +23,37 @@ class Twitter_BiLSTM(nn.Module) :
                               dropout = drop_out
                               )
 
-        self.fc1 = nn.Linear(hidden_size * 2 , hidden_size)
-        self.fc2 = nn.Linear(hidden_size , 1)
-        self.drop = nn.Dropout(0.5)
+        self.u = nn.Parameter(torch.Tensor(hidden_size * 2 , hidden_size * 2))
+        self.w = nn.Parameter(torch.Tensor(hidden_size * 2))
 
-    def attention(self , query , x ,mask = None):
-        d_k = query.size(-1)#d_k为query的维度
-        scores = torch.matmul(query , x.transpose(1 , 2) / math.sqrt(d_k))
-        alpha_n = F.softmax(scores , dim = -1)
-        context = torch.matmul(alpha_n , x).sum(1)
-        return context , alpha_n
+        nn.init.uniform_(self.u , -0.1 , 0.1)
+        nn.init.uniform_(self.w , -0.1 , 0.1)
+        self.tanh1 = nn.Tanh()
+        self.tanh2 = nn.Tanh()
 
+        self.content_fc = nn.Sequential(
+            nn.Linear(hidden_size * 2 , hidden_size) ,
+            nn.BatchNorm1d(hidden_size) ,
+            nn.ReLU(inplace = True) ,
+            nn.Dropout(drop_out) ,
+            nn.Linear(hidden_size , 1)
+        )
 
-
-
+    #def attention(self , query , x ,mask = None):
 
     def forward(self , text):
         embedded = self.embedding(text)# embedded:[batch_size , seq_len , embedding_dim]
         output , (h_n , c_n) = self.BiLSTM(embedded)
+        M = torch.tanh(torch.matmul(output, self.u))
+        alpha = F.softmax(torch.matmul(M, self.w), dim=1).unsqueeze(-1)
+        out = alpha * output
+        out = torch.sum(out, dim=1)
+        out = self.content_fc(out)
+        return out.squeeze(1)
         #output:[batch_size , seq_len , hidden_size * bidirectional]
         #h_n , c_n:[num_layers * bidirectional , batch_size , hidden_size]
 
-        #取两个方向上最后一次output进行concat操作
-        output_fw = h_n[-2, :, :]  # 正向最后一次输出
-        output_bw = h_n[-1, :, :]  # 反向最后一次输出
-        out = torch.cat([output_fw, output_bw], dim=-1)  # output[batch_size ,hidden_size * 2]
-        out = self.fc1(out)
-        out = self.drop(self.fc2(out))
-        return out.squeeze(1)
+        # #取两个方向上最后一次output进行concat操作
+        # output_fw = h_n[-2, :, :]  # 正向最后一次输出
+        # output_bw = h_n[-1, :, :]  # 反向最后一次输出
+        # out = torch.cat([output_fw, output_bw], dim=-1)  # output[batch_size ,hidden_size * 2]

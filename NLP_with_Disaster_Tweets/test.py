@@ -21,6 +21,7 @@ if os.path.exists('./model/model.pkl') :
     model.load_state_dict(torch.load('./model/model.pkl'))
     optimizer.load_state_dict(torch.load('./model/optimizer.pkl'))
 
+model.eval()
 
 #定义用于计算准确率的函数
 def calc_accuracy(y_pred , y_true) :

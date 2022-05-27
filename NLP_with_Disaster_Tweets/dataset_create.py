@@ -31,7 +31,7 @@ text_test_split = split_word(text_test_process)
 #-------------------------------------------------------------
 def creat_dataloader(x_train , y_train) :
     dataset = TensorDataset(x_train , y_train)
-    dataloader = DataLoader(dataset = dataset , batch_size = 128 , shuffle = True)
+    dataloader = DataLoader(dataset = dataset , batch_size = 32 , shuffle = True)
     return dataloader
 
 #step1:将分好词的句子转化为数字序列，并转为Tensor类型数据

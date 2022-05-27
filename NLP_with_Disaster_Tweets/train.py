@@ -15,7 +15,7 @@ model = Twitter_BiLSTM(input_size = config.embedding_dim ,
                        num_layers = config.num_layers ,
                        drop_out = config.drop_out)
 
-optimizer = Adam(model.parameters() , lr = 0.001)
+optimizer = Adam(model.parameters() , lr = 0.0001)
 criterion = BCEWithLogitsLoss()
 
 model = model.to(config.device)
